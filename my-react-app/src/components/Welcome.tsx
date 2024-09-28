@@ -60,6 +60,9 @@ const Welcome: FC = () => {
         Play!
       </button>
       <ToastContainer />
+      <button style={styles.button} onClick={() => navigate('/bottom')}>
+        Bottom Nav Test
+      </button>
     </div>
   );
 };
