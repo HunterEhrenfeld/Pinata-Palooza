@@ -40,7 +40,7 @@ const Welcome: FC = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className='font-sans'>
       <h1 style={styles.title}>Welcome to Zoom Who!</h1>
       <p style={styles.description}>
         This is a simple welcome page to get you started. Feel free to explore
