@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function JoinLobby() {
     const [username, setUsername] = useState('');
+    const [opponentUsername, setOpponentUsername] = useState('');
   const [lobbyId, setLobbyId] = useState(''); // New state for lobby ID
   const [lobby, setLobby] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
@@ -10,10 +14,17 @@ function JoinLobby() {
   const [error, setError] = useState('');
   const socketRef = useRef(null);
 
+  const navigate = useNavigate();
+
   const joinLobby = () => {
     if (!lobbyId) {
       setError('Please enter a lobby ID');
       return;
+    }
+
+    if (!username) {
+        setError('Please set a username');
+        return;
     }
 
     socketRef.current = new WebSocket(`ws://localhost:8080/lobby/${lobbyId}`);
@@ -27,12 +38,16 @@ function JoinLobby() {
     socketRef.current.onmessage = (event) => {
       const data = event.data;
 
-      console.log(data)
       if (data.startsWith('lobby:')) {
         const lobbyList = data.replace('lobby:', '').split(',');
+     
         setInGame((currentInGame) => {
             if (currentInGame && lobbyList.length < 2) {
               console.log("Less than 2 players in the lobby, exiting the game");
+              toast.warn("Player left match.")
+              leaveLobby();
+              alert("Player left match, exiting");
+              navigate("/")
               return false;  // Update inGame to false
             }
             return currentInGame; // Keep it unchanged if no conditions are met
@@ -57,6 +72,14 @@ function JoinLobby() {
       socketRef.current.close();
     }
   };
+
+  useEffect(() => {
+        const filteredUserList = lobby.filter(person => person !== username);
+        if (filteredUserList.length != 0) {
+            setOpponentUsername(filteredUserList[0]);
+            console.log("Oppnent: " + filteredUserList[0])
+        }
+    }, [lobby])
 
   useEffect(() => {
     return () => {
@@ -103,6 +126,7 @@ function JoinLobby() {
           <button onClick={leaveLobby}>Leave Lobby</button>
         </div>
       )}
+        <ToastContainer />
     </div>
   );
 

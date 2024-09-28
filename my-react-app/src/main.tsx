@@ -8,7 +8,7 @@ import Game from './components/Game.tsx';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path='/*' element={<Welcome />} />
@@ -16,5 +16,5 @@ createRoot(document.getElementById('root')!).render(
         <Route path='/play' element={<Game />} />
       </Routes>
     </BrowserRouter>
-  </StrictMode>
+  // </StrictMode>
 );

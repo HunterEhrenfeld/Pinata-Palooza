@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 const Welcome: FC = () => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const Welcome: FC = () => {
       >
         Play!
       </button>
+      <ToastContainer />
     </div>
   );
 };
