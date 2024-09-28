@@ -1,6 +1,9 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Welcome: FC = () => {
+  const navigate = useNavigate();
+
   const styles = {
     container: {
       display: 'flex',
@@ -31,6 +34,7 @@ const Welcome: FC = () => {
       border: 'none',
       borderRadius: '5px',
       cursor: 'pointer',
+      margin: '5px',
     },
   };
 
@@ -43,6 +47,9 @@ const Welcome: FC = () => {
       </p>
       <button style={styles.button} onClick={() => alert('Welcome!')}>
         Get Started
+      </button>
+      <button style={styles.button} onClick={() => navigate('/zoom')}>
+        Zoom Test baby!
       </button>
     </div>
   );
