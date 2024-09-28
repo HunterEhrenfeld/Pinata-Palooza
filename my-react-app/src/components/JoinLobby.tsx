@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Game from './Game';
 
 
 function JoinLobby() {
@@ -111,8 +112,7 @@ function JoinLobby() {
         </div>
       ) : inGame ? (
         <div>
-          <h2>Game Started!</h2>
-          <p>Game logic will go here...</p>
+          <Game />
           <button onClick={leaveLobby}>Leave Game</button>
         </div>
       ) : (
