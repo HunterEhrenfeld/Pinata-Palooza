@@ -48,3 +48,7 @@ export default tseslint.config({
   },
 })
 ```
+## FE VSCode plugins:
+
+https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
+https://marketplace.visualstudio.com/items?itemName=csstools.postcss

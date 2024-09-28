@@ -54,6 +54,9 @@ const Welcome: FC = () => {
       <button style={styles.button} onClick={() => navigate('/join')}>
         Join Lobby
       </button>
+      <button className="text-green-700" style={styles.button} onClick={() => navigate('/play')}>
+        Play!
+      </button>
     </div>
   );
 };
