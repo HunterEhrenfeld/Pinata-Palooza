@@ -2,26 +2,44 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function JoinLobby() {
-    const [username, setUsername] = useState<any>('');
-  const [lobby, setLobby] = useState<any>([]);
-  const [isConnected, setIsConnected] = useState<any>(false);
-  const socketRef = useRef<any>(null);
+    const [username, setUsername] = useState('');
+  const [lobbyId, setLobbyId] = useState(''); // New state for lobby ID
+  const [lobby, setLobby] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [inGame, setInGame] = useState(false); // New state to track if the game has started
+  const [error, setError] = useState('');
+  const socketRef = useRef(null);
 
   const joinLobby = () => {
-    socketRef.current = new WebSocket('ws://localhost:8080/lobby');
+    if (!lobbyId) {
+      setError('Please enter a lobby ID');
+      return;
+    }
+
+    socketRef.current = new WebSocket(`ws://localhost:8080/lobby/${lobbyId}`);
     
     socketRef.current.onopen = () => {
       socketRef.current.send(username);
       setIsConnected(true);
+      setError(''); // Clear any previous errors
     };
 
-    socketRef.current.onmessage = (event: any) => {
-      const lobbyList = event.data.split(',');
-      setLobby(lobbyList);
+    socketRef.current.onmessage = (event) => {
+      const data = event.data;
+
+      if (data.startsWith('lobby:')) {
+        const lobbyList = data.replace('lobby:', '').split(',');
+        setLobby(lobbyList);
+      } else if (data === 'start') {
+        setInGame(true);
+      } else if (data.startsWith('error:')) {
+        setError(data.replace('error:', ''));
+      }
     };
 
     socketRef.current.onclose = () => {
       setIsConnected(false);
+      setInGame(false);
     };
   };
 
@@ -50,13 +68,26 @@ function JoinLobby() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+          <input
+            type="text"
+            placeholder="Enter Lobby ID"
+            value={lobbyId}
+            onChange={(e) => setLobbyId(e.target.value)}
+          />
           <button onClick={joinLobby}>Join Lobby</button>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+        </div>
+      ) : inGame ? (
+        <div>
+          <h2>Game Started!</h2>
+          <p>Game logic will go here...</p>
+          <button onClick={leaveLobby}>Leave Game</button>
         </div>
       ) : (
         <div>
           <h2>Lobby</h2>
           <ul>
-            {lobby.map((player: any, index: any) => (
+            {lobby.map((player, index) => (
               <li key={index}>{player}</li>
             ))}
           </ul>
@@ -65,6 +96,7 @@ function JoinLobby() {
       )}
     </div>
   );
+
   };
   
   export default JoinLobby;
