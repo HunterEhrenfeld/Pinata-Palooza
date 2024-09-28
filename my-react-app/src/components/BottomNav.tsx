@@ -33,9 +33,9 @@ const BottomNav: FC = () => {
     },
     {
       name: 'Accessories',
-      options: ['Watch', 'Glasses', 'Hat', 'Scarf', 'Earrings'],
+      options: ['Watch', 'Glasses', 'a Hat', 'a Scarf', 'Earrings'],
     },
-    { name: 'Face', options: ['Beard', 'Mustache', 'Makeup'] },
+    { name: 'Face', options: ['Beard', 'Mustache', 'Clean face'] },
   ];
 
   const handleSelectCategory = (name: string, options: string[]) => {
