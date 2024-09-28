@@ -27,8 +27,16 @@ function JoinLobby() {
     socketRef.current.onmessage = (event) => {
       const data = event.data;
 
+      console.log(data)
       if (data.startsWith('lobby:')) {
         const lobbyList = data.replace('lobby:', '').split(',');
+        setInGame((currentInGame) => {
+            if (currentInGame && lobbyList.length < 2) {
+              console.log("Less than 2 players in the lobby, exiting the game");
+              return false;  // Update inGame to false
+            }
+            return currentInGame; // Keep it unchanged if no conditions are met
+          });
         setLobby(lobbyList);
       } else if (data === 'start') {
         setInGame(true);
@@ -38,6 +46,7 @@ function JoinLobby() {
     };
 
     socketRef.current.onclose = () => {
+        console.log("closed");
       setIsConnected(false);
       setInGame(false);
     };
