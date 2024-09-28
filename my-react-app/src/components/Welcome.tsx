@@ -48,13 +48,14 @@ const Welcome: FC = () => {
       <button style={styles.button} onClick={() => alert('Welcome!')}>
         Get Started
       </button>
-      <button style={styles.button} onClick={() => navigate('/zoom')}>
-        Zoom Test baby!
-      </button>
       <button style={styles.button} onClick={() => navigate('/join')}>
         Join Lobby
       </button>
-      <button className="text-green-700" style={styles.button} onClick={() => navigate('/play')}>
+      <button
+        className='text-green-700'
+        style={styles.button}
+        onClick={() => navigate('/play')}
+      >
         Play!
       </button>
     </div>
