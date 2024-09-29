@@ -8,7 +8,7 @@ interface Category {
 
 interface BottomNavProps {
   askQuestion: (question: string) => void;
-  submitGuess: (guessPersonId: string) => void; // Add submitGuess prop
+  submitGuess: (guessPersonId: string) => void;
   persons: any[]; // List of all persons available to guess
 }
 
@@ -26,7 +26,7 @@ const BottomNav: FC<BottomNavProps> = ({
   const [generatedQuestion, setGeneratedQuestion] = useState<string | null>(
     null
   );
-  const [selectedGuess, setSelectedGuess] = useState<string | null>(null); // Track the selected person guess
+  const [selectedGuess, setSelectedGuess] = useState<string | null>(null);
 
   const categories: Category[] = [
     {
@@ -91,7 +91,7 @@ const BottomNav: FC<BottomNavProps> = ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: '10px',
-    minHeight: '50vh', // Reserve space for content
+    minHeight: '50vh',
     justifyContent: 'space-between',
   };
 
@@ -104,7 +104,7 @@ const BottomNav: FC<BottomNavProps> = ({
     display: 'flex',
     gap: '10px',
     marginTop: '20px',
-    minHeight: '50px', // Reserve space for options
+    minHeight: '50px',
     alignItems: 'center',
   };
 
@@ -128,45 +128,41 @@ const BottomNav: FC<BottomNavProps> = ({
     color: '#fff',
   };
 
-  const questionContainerStyle: React.CSSProperties = {
+  const bottomRowStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '10px 20px',
-    position: 'relative',
     width: '100%',
+    padding: '10px 20px',
+    gap: '20px',
     backgroundColor: '#2c2c2c',
     border: '1px solid #444',
     borderRadius: '10px',
-    color: '#d3d3d3', // Light gray text
+    color: '#d3d3d3',
     fontSize: '18px',
     fontWeight: 'bold',
-    height: '60px', // Uniform height
-  };
-
-  const bottomSectionStyle: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'space-between', // Align buttons and guess selection on opposite sides
-    width: '100%',
-    padding: '20px 0',
+    height: '60px',
+    boxSizing: 'border-box', // Ensure padding doesn't overflow
   };
 
   const buttonStyle: React.CSSProperties = {
-    backgroundColor: '#d3d3d3', // Light gray background to match theme
-    color: '#333', // Darker text for contrast
-    border: '1px solid #aaa', // Border similar to the options
+    backgroundColor: '#d3d3d3',
+    color: '#333',
+    border: '1px solid #aaa',
     padding: '10px 20px',
     borderRadius: '8px',
     cursor: 'pointer',
     fontSize: '14px',
     fontWeight: 'bold',
     transition: 'background-color 0.3s ease',
+    whiteSpace: 'nowrap',
   };
 
   const guessSelectStyle: React.CSSProperties = {
     padding: '10px',
     borderRadius: '8px',
-    width: '200px',
+    width: '250px', // Increased width to fit the text
+    marginRight: '10px',
   };
 
   const handleGuessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -214,19 +210,19 @@ const BottomNav: FC<BottomNavProps> = ({
         )}
       </div>
 
-      {/* Bottom section: Submit question on the left and guess on the right */}
-      <div style={bottomSectionStyle}>
-        <div>{generatedQuestion || 'Your question will appear here...'}</div>
+      {/* Bottom section in a single row */}
+      <div style={bottomRowStyle}>
         <button
           style={buttonStyle}
-          onClick={() => askQuestion(generatedQuestion)}
+          onClick={() => askQuestion(generatedQuestion!)}
           disabled={!generatedQuestion}
         >
           Send Question
         </button>
 
-        {/* Select dropdown for making a final guess */}
-        <div>
+        <div>{generatedQuestion || 'Your question will appear here...'}</div>
+
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <select
             style={guessSelectStyle}
             onChange={handleGuessChange}
@@ -243,7 +239,7 @@ const BottomNav: FC<BottomNavProps> = ({
           </select>
           <button
             style={buttonStyle}
-            onClick={() => submitGuess(selectedGuess)}
+            onClick={() => submitGuess(selectedGuess!)}
             disabled={!selectedGuess}
           >
             Submit Guess
