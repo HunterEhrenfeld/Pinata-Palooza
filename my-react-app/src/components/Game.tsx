@@ -143,7 +143,6 @@ const Game: FC<any> = ({ lobbyId }) => {
               {yourTurn ? `🟢 Your turn!` : `🔴 Opponent's turn`}
             </div>
           </div>
-          {yourTurn ? <>'Your turn'</> : <>'Opponent's turn'</>}
         </div>
 
         {/* Show waiting message or BottomNav */}
