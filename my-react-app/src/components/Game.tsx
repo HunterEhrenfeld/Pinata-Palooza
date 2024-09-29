@@ -25,11 +25,10 @@ const Game: FC = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log(activePersons);
-    if (activePersons.includes(personCardClick))
-      updateActivePersons(activePersons.filter((i) => i !== personCardClick));
-    else updateActivePersons(activePersons.concat(personCardClick));
+	useEffect(() => {
+		if (activePersons.includes(personCardClick))
+			updateActivePersons(activePersons.filter((i) => i !== personCardClick));
+		else updateActivePersons(activePersons.concat(personCardClick));
     updatePersonCardClick(null);
   }, [personCardClick]);
 
@@ -50,14 +49,6 @@ const Game: FC = () => {
       <div>
         <div className='flex'>
           <div className='px-10 grid grid-rows-4 grid-cols-6 gap-3'>
-            {/* <PersonCard name='sam' image='placeholder' isActive={false}/>
-      <PersonCard name='sam' image='placeholder' isActive={true}/>
-      <PersonCard name='sam' image='placeholder' isActive={true}/>
-      <PersonCard name='sam' image='placeholder' isActive={true}/>
-      <PersonCard name='sam' image='placeholder' isActive={true}/>
-      <PersonCard name='sam' image='placeholder' isActive={true}/>
-      <PersonCard name='sam' image='placeholder' isActive={true}/>
-      <PersonCard name='sam' image='placeholder' isActive={true}/> */}
             {persons.map((person: any) => {
               return (
                 <PersonCard
