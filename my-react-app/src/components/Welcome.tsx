@@ -11,9 +11,6 @@ const Welcome: FC = () => {
       flexDirection: 'column' as const,
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100vh',
-      width: '100vw',
-      backgroundColor: '#f0f0f0',
     },
     title: {
       fontSize: '2.5rem',
