@@ -240,7 +240,7 @@ const BottomNav: FC<BottomNavProps> = ({
               Select your final guess
             </option>
             {persons.map((person) => (
-              <option key={person.id} value={person.id}>
+              <option key={person.cid} value={person.cid}>
                 {person.name}
               </option>
             ))}

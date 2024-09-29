@@ -18,4 +18,7 @@ public class GameWebSocketModel {
     String question;
     String lobbyId;
     String answer;
+    String guessId;
+    Boolean gameOver;
+    String guessName;
 }

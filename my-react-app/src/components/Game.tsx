@@ -15,6 +15,8 @@ const Game: FC<any> = ({ lobbyId }) => {
   const [answeringQuestion, setAnsweringQuestion] = useState(false);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
+  const [gameOver, setGameOver] = useState(false);
+  const [guessName, setGuessName] = useState('')
 
   const socketRef = useRef(null);
 
@@ -52,6 +54,12 @@ const Game: FC<any> = ({ lobbyId }) => {
         setAnswer(data.answer)
         setWaitingForAnswer(false);
         setYourTurn(data.yourTurn);
+      } else if (data.messageType === 'guess') {
+        setGameOver(data.gameOver)
+        setGuessName(data.guessName)
+        if (!data.gameOver) {
+          setYourTurn(data.yourTurn);
+        }
       }
     };
 
@@ -90,6 +98,7 @@ const Game: FC<any> = ({ lobbyId }) => {
   };
 
   const submitGuess = (guessPersonId) => {
+    console.log(guessPersonId);
     if (yourTurn) {
       const message = {
         messageType: 'guess',
@@ -111,6 +120,9 @@ const Game: FC<any> = ({ lobbyId }) => {
     socketRef.current.send(JSON.stringify(message));
   };
 
+  if (gameOver) {
+    return <div>Game Over</div>
+  }
   if (loading) {
     return <div>Loading</div>;
   } else {

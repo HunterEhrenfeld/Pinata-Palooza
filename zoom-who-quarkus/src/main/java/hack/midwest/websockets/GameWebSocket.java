@@ -61,7 +61,6 @@ public class GameWebSocket {
         selectedCharacter.put(session, personEntity);
         GameWebSocketModel payload = new GameWebSocketModel();
         payload.setPersonList(gameCharacters);
-        payload.setYourPerson(personEntity);
         payload.setIsReady(gameSessions.size() == 2);
         payload.setMessageType("init");
         initBroadcast(payload, gameSessions, lobbyId);
@@ -83,6 +82,7 @@ public class GameWebSocket {
         payload.setLobbyId(jsonPayload.getString("lobbyId"));
         payload.setMessageType(jsonPayload.getString("messageType"));
         payload.setAnswer(jsonPayload.getString("answer"));
+        payload.setGuessId(jsonPayload.getString("guessId"));
         System.out.println("Message: " + objectMapper.writeValueAsString(payload));
         handleGameLogic(payload, session);
     }
@@ -97,6 +97,7 @@ public class GameWebSocket {
         for (Session session : sessions) {
             Boolean yourTurn = session.equals(playerTurn.get(lobbyId));
             payload.setYourTurn(yourTurn);
+            payload.setYourPerson(selectedCharacter.get(session));
             session.getAsyncRemote().sendText(objectMapper.writeValueAsString(payload));
         }
     }
@@ -132,6 +133,28 @@ public class GameWebSocket {
             userPayload.setIsReady(true);
             userPayload.setYourTurn(true);
             userPayload.setMessageType("answer");
+            userSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(userPayload));
+        } else if (payload.getMessageType().equals("guess")) {
+            PersonEntity guessedEntity = PersonEntity.find("cid", payload.getGuessId()).singleResult();
+            PersonEntity opponentsPerson = selectedCharacter.get(opponentSession);
+            boolean correctGuess = opponentsPerson.cid.equals(payload.getGuessId());
+            GameWebSocketModel opponentPayload = new GameWebSocketModel();
+            opponentPayload.setQuestion(payload.getQuestion());
+            opponentPayload.setIsReady(true);
+            opponentPayload.setYourTurn(true);
+            opponentPayload.setAnswer(payload.getAnswer());
+            opponentPayload.setMessageType("guess");
+            opponentPayload.setGameOver(correctGuess);
+            opponentPayload.setGuessName(guessedEntity.name);
+            opponentSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(opponentPayload));
+            GameWebSocketModel userPayload = new GameWebSocketModel();
+            userPayload.setQuestion(payload.getQuestion());
+            userPayload.setAnswer(payload.getAnswer());
+            userPayload.setIsReady(true);
+            userPayload.setYourTurn(false);
+            userPayload.setMessageType("guess");
+            userPayload.setGameOver(correctGuess);
+            userPayload.setGuessName(guessedEntity.name);
             userSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(userPayload));
         }
     }
