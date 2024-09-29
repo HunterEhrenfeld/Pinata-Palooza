@@ -108,10 +108,10 @@ const Game: FC<any> = ({lobbyId}) => {
             {persons.map((person: any) => {
               return (
                 <PersonCard
-                  personId={person.id}
+                  personId={person.cid}
                   name={person.name}
                   cid={person.cid}
-                  isActive={activePersons.includes(person.id.toString())}
+                  isActive={activePersons.includes(person.cid.toString())}
                   onClick={updatePersonCardClick}
                   isSelected={false}
                 />
@@ -121,7 +121,7 @@ const Game: FC<any> = ({lobbyId}) => {
           <div className='px-10 w-5'>
             Selected Person:
             <PersonCard
-              personId={yourPerson.id}
+              personId={yourPerson.cid}
               name={yourPerson.name}
               cid={yourPerson.cid}
               isActive={true}
