@@ -1,15 +1,17 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import PersonCard from './PersonCard';
 import BottomNav from './BottomNav';
 import axios from 'axios';
 
-const Game: FC = () => {
+const Game: FC<any> = ({lobbyId}) => {
   // Hooks
   const [loading, setLoading] = useState(true);
   const [persons, setPersons] = useState([]);
   const [personCardClick, updatePersonCardClick] = useState(null);
   const [activePersons, updateActivePersons] = useState<string[]>([]);
   const [yourPerson, setYourPerson] = useState({});
+
+  const socketRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +25,18 @@ const Game: FC = () => {
     };
 
     fetchData();
+    console.log(lobbyId)
+    socketRef.current = new WebSocket(`ws://localhost:8080/game/${lobbyId}`);
+
+    socketRef.current.onopen = (event) => {
+      console.log(event);
+    };
+
+    socketRef.current.onmessage = (event) => {
+      const data = event.data;
+
+      console.log(data);
+    }
   }, []);
 
 	useEffect(() => {

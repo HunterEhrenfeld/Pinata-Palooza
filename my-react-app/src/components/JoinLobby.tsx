@@ -38,7 +38,7 @@ function JoinLobby() {
 
     socketRef.current.onmessage = (event) => {
       const data = event.data;
-
+        console.log(data)
       if (data.startsWith('lobby:')) {
         const lobbyList = data.replace('lobby:', '').split(',');
      
@@ -112,7 +112,7 @@ function JoinLobby() {
         </div>
       ) : inGame ? (
         <div>
-          <Game />
+          <Game lobbyId={lobbyId} />
           <button onClick={leaveLobby}>Leave Game</button>
         </div>
       ) : (
