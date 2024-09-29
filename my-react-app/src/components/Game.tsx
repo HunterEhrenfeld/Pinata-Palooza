@@ -43,6 +43,7 @@ const Game: FC<any> = ({lobbyId}) => {
         setYourPerson(data.yourPerson);
         setYourTurn(data.yourTurn);
         setLoading(!data.isReady);
+        updateActivePersons(data.personList.map((i: { id: any }) => i.cid.toString()));
       }
       
     }
@@ -53,6 +54,7 @@ const Game: FC<any> = ({lobbyId}) => {
 			updateActivePersons(activePersons.filter((i) => i !== personCardClick));
 		else updateActivePersons(activePersons.concat(personCardClick));
     updatePersonCardClick(null);
+    console.log(activePersons)
   }, [personCardClick]);
 
   useEffect(() => {
@@ -73,10 +75,10 @@ const Game: FC<any> = ({lobbyId}) => {
             {persons.map((person: any) => {
               return (
                 <PersonCard
-                  personId={person.id}
+                  personId={person.cid.toString()}
                   name={person.name}
                   cid={person.cid}
-                  isActive={activePersons.includes(person.id.toString())}
+                  isActive={activePersons.includes(person.cid.toString())}
                   onClick={updatePersonCardClick}
                   isSelected={false}
                 />
@@ -86,7 +88,7 @@ const Game: FC<any> = ({lobbyId}) => {
           <div className='px-10 w-5'>
             Selected Person:
             <PersonCard
-              personId={yourPerson.id}
+              personId={yourPerson.cid}
               name={yourPerson.name}
               cid={yourPerson.cid}
               isActive={true}
