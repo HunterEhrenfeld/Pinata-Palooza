@@ -6,7 +6,11 @@ interface Category {
   options: string[];
 }
 
-const BottomNav: FC = () => {
+interface BottomNav {
+  askQuestion: (question: any) => void;
+}
+
+const BottomNav: FC<BottomNav> = ({askQuestion}) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -190,7 +194,7 @@ const BottomNav: FC = () => {
       {/* Display the generated question and the button */}
       <div style={questionContainerStyle}>
         <div>{generatedQuestion || 'Your question will appear here...'}</div>
-        <button style={questionButtonStyle}>Send Question</button>
+        <button style={questionButtonStyle} onClick={() => askQuestion(generatedQuestion)}>Send Question</button>
       </div>
     </div>
   );

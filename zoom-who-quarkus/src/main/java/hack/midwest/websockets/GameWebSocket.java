@@ -6,6 +6,7 @@ import hack.midwest.entity.PersonEntity;
 import hack.midwest.models.GameWebSocketModel;
 import hack.midwest.service.PersonService;
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
@@ -74,8 +75,15 @@ public class GameWebSocket {
 //    }
 //
     @OnMessage
-    public void onMessage(String message, Session session) {
-        handleGameLogic(message, session);
+    public void onMessage(String message, Session session) throws JsonProcessingException {
+        System.out.println(message);
+        JsonObject jsonPayload = objectMapper.convertValue(message, JsonObject.class);
+        GameWebSocketModel payload = new GameWebSocketModel();
+        payload.setQuestion(jsonPayload.getString("question"));
+        payload.setLobbyId(jsonPayload.getString("lobbyId"));
+        payload.setMessageType(jsonPayload.getString("messageType"));
+        System.out.println("Message: " + objectMapper.writeValueAsString(payload));
+        handleGameLogic(payload, session);
     }
 //
 //    private void broadcast(String message) {
@@ -92,22 +100,24 @@ public class GameWebSocket {
         }
     }
 
-    private void handleGameLogic(String message, Session session) {
-//        try {
-//            // Parse message from JSON to extract the type and content
-//            Map<String, Object> messageMap = new ObjectMapper().readValue(message, Map.class);
-//            String type = (String) messageMap.get("type");
-//
-//            if (type.equals("askQuestion")) {
-//                String question = (String) messageMap.get("question");
-//                handleQuestion(question, session);
-//            } else if (type.equals("guessCharacter")) {
-//                String guess = (String) messageMap.get("guess");
-//                handleGuess(guess, session);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    private void handleGameLogic(GameWebSocketModel payload, Session session) throws JsonProcessingException {
+        Set<Session> sessionList = gameList.get(payload.getLobbyId());
+        Session userSession = sessionList.stream().filter(session1 -> session1.equals(session)).findFirst().get();
+        Session opponentSession = sessionList.stream().filter(session1 -> !session1.equals(session)).findFirst().get();
+        if (payload.getMessageType().equals("question")) {
+            GameWebSocketModel opponentPayload = new GameWebSocketModel();
+            opponentPayload.setQuestion(payload.getQuestion());
+            opponentPayload.setIsReady(true);
+            opponentPayload.setYourTurn(true);
+            opponentPayload.setMessageType("question");
+            opponentSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(opponentPayload));
+            GameWebSocketModel userPayload = new GameWebSocketModel();
+            userPayload.setQuestion(payload.getQuestion());
+            userPayload.setIsReady(true);
+            userPayload.setYourTurn(false);
+            userPayload.setMessageType("question");
+            userSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(userPayload));
+        }
     }
 //
 //    private void handleQuestion(String question, Session session) {
