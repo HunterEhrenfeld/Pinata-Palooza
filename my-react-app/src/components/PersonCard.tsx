@@ -47,7 +47,7 @@ const PersonCard: FC<PersonCardProps> = ({
 
   return (
     <div
-      className={`${isSelected ? 'w-40 h-44' : 'w-32 h-36'} bg-slate-900 rounded-md flex flex-col overflow-hidden`}
+      className={`${isSelected ? 'w-40 h-44' : 'w-32 h-36'} hover:cursor-pointer bg-slate-900 rounded-md flex flex-col overflow-hidden`}
       onClick={() => onClick(personId)}
     >
       <div className={`h-3/4 flex justify-center ${!isActive && 'grayscale'}`}>
