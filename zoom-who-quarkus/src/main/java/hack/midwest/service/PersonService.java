@@ -7,12 +7,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
 public class PersonService {
     public List<PersonEntity> getBoard(String type) {
         List<PersonEntity> personEntities = PersonEntity.listAll();
+        Collections.shuffle(personEntities);
         List<PersonEntity> filteredPersons = new ArrayList<>();
         int count = 0;
         for (PersonEntity person: personEntities) {
