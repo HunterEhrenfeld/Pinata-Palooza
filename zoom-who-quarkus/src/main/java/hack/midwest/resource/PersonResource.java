@@ -1,10 +1,12 @@
 package hack.midwest.resource;
 
+import hack.midwest.dtos.PersonDto;
 import hack.midwest.entity.PersonEntity;
 import hack.midwest.service.PersonService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -41,5 +43,10 @@ public class PersonResource {
             }
         }
         return duplicatedList;
+    }
+
+    @POST
+    public List<PersonDto> createPersons(List<PersonDto> persons) {
+        return personService.createPersons(persons);
     }
 }

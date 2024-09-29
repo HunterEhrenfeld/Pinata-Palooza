@@ -9,6 +9,7 @@ const Game: FC = () => {
 	const [persons, setPersons] = useState([]);
 	const [personCardClick, updatePersonCardClick] = useState(null);
 	const [activePersons, updateActivePersons] = useState<string[]>([]);
+  const [yourPerson, setYourPerson] = useState({});
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -32,26 +33,51 @@ const Game: FC = () => {
     updatePersonCardClick(null);
 	}, [personCardClick]);
 
-	if (loading) {
-		return <div>Loading</div>;
-	} else {
-		return (
-			<div className='px-10 grid grid-rows-4 grid-cols-6 gap-3'>
-				{persons.map((person) => {
-					return (
-						<PersonCard
-							personId={person.id}
-							name={person.name}
-							image={person.imageUrl}
-							isActive={activePersons.includes(person.id.toString())}
-							onClick={updatePersonCardClick}
-						/>
-					);
-				})}
-				<BottomNav />
-			</div>
-		);
-	}
-};
+
+useEffect(() => {
+  if (!loading && persons) {
+    setYourPerson(persons[Math.floor(Math.random() * 24)])
+  }
+}, [loading])
+
+useEffect(() => {
+  console.log(yourPerson)
+}, [yourPerson])
+
+if (loading) {
+  return <div>Loading</div>
+} else {
+  return(
+    <div>
+      <div className='flex'>
+    <div className='px-10 grid grid-rows-4 grid-cols-6 gap-3'>
+      {/* <PersonCard name='sam' image='placeholder' isActive={false}/>
+      <PersonCard name='sam' image='placeholder' isActive={true}/>
+      <PersonCard name='sam' image='placeholder' isActive={true}/>
+      <PersonCard name='sam' image='placeholder' isActive={true}/>
+      <PersonCard name='sam' image='placeholder' isActive={true}/>
+      <PersonCard name='sam' image='placeholder' isActive={true}/>
+      <PersonCard name='sam' image='placeholder' isActive={true}/>
+      <PersonCard name='sam' image='placeholder' isActive={true}/> */}
+      {persons.map(person => {
+        return <PersonCard
+        personId={person.id}
+        name={person.name}
+        image={person.imageUrl}
+        isActive={activePersons.includes(person.id.toString())}
+        onClick={updatePersonCardClick}
+      />
+      })}
+      </div>
+      <div className='px-10 w-5'>
+        Selected Person:
+        <PersonCard personId={yourPerson.id} name={yourPerson.name} image={yourPerson.imageUrl} isActive={true} onClick={()=>{}}/>
+      </div>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+}
 
 export default Game;
