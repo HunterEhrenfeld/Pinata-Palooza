@@ -49,7 +49,7 @@ const Game: FC<any> = ({ lobbyId }) => {
           setWaitingForAnswer(true);
         }
       } else if (data.messageType === 'answer') {
-        // Handle received answer
+        setAnswer(data.answer)
         setWaitingForAnswer(false);
         setYourTurn(data.yourTurn);
       }
