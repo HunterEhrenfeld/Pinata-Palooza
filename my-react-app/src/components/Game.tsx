@@ -120,11 +120,25 @@ const Game: FC<any> = ({ lobbyId }) => {
     socketRef.current.send(JSON.stringify(message));
   };
 
+  const answerContainerStyle: React.CSSProperties = {
+    backgroundColor: '#2c2c2c',
+    padding: '10px 20px',
+    borderRadius: '10px',
+    color: '#f8f8f8',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: '20px',
+    width: '80%',
+    margin: '20px auto',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
+  };
+
   if (gameOver) {
     if (yourTurn) {
       return <div>You won!</div>;
     } else {
-      return <div>You lost</div>
+      return <div>You lost</div>;
     }
   }
   if (loading) {
@@ -171,13 +185,14 @@ const Game: FC<any> = ({ lobbyId }) => {
             persons={persons}
           />
         )}
+
+        {/* Answer and question styling */}
         {question && answer && !yourTurn ? (
-          <div>
-            They answered {answer} to {question}
+          <div style={answerContainerStyle}>
+            They answered "{answer}" to "{question}"
           </div>
-        ) : (
-          <></>
-        )}
+        ) : null}
+
         <AnswerQuestionModal
           question={question}
           isOpen={answeringQuestion}
