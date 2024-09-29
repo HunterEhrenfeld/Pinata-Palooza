@@ -82,6 +82,7 @@ public class GameWebSocket {
         payload.setQuestion(jsonPayload.getString("question"));
         payload.setLobbyId(jsonPayload.getString("lobbyId"));
         payload.setMessageType(jsonPayload.getString("messageType"));
+        payload.setAnswer(jsonPayload.getString("answer"));
         System.out.println("Message: " + objectMapper.writeValueAsString(payload));
         handleGameLogic(payload, session);
     }
@@ -116,6 +117,21 @@ public class GameWebSocket {
             userPayload.setIsReady(true);
             userPayload.setYourTurn(false);
             userPayload.setMessageType("question");
+            userSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(userPayload));
+        } else if (payload.getMessageType().equals("answer")) {
+            GameWebSocketModel opponentPayload = new GameWebSocketModel();
+            opponentPayload.setQuestion(payload.getQuestion());
+            opponentPayload.setIsReady(true);
+            opponentPayload.setYourTurn(false);
+            opponentPayload.setAnswer(payload.getAnswer());
+            opponentPayload.setMessageType("answer");
+            opponentSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(opponentPayload));
+            GameWebSocketModel userPayload = new GameWebSocketModel();
+            userPayload.setQuestion(payload.getQuestion());
+            userPayload.setAnswer(payload.getAnswer());
+            userPayload.setIsReady(true);
+            userPayload.setYourTurn(true);
+            userPayload.setMessageType("answer");
             userSession.getAsyncRemote().sendText(objectMapper.writeValueAsString(userPayload));
         }
     }

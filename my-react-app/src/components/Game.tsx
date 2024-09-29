@@ -15,6 +15,7 @@ const Game: FC<any> = ({lobbyId}) => {
   const [waitingForAnswer, setWaitingForAnswer] = useState(false);
   const [answeringQuestion, setAnsweringQuestion] = useState(false);
   const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
 
 	const socketRef = useRef(null);
 
@@ -61,6 +62,8 @@ const Game: FC<any> = ({lobbyId}) => {
         }
       } else if (data.messageType === 'answer') {
         setWaitingForAnswer(false);
+        setYourTurn(data.yourTurn);
+
       }
       
     }
@@ -90,6 +93,7 @@ const Game: FC<any> = ({lobbyId}) => {
 
   const answerQuestion = (answer) => {
     setAnsweringQuestion(false);
+    console.log(answer);
     const message = {messageType: 'answer', question: question, lobbyId: lobbyId, answer: answer}
       socketRef.current.send(JSON.stringify(message));
   }
@@ -128,6 +132,7 @@ const Game: FC<any> = ({lobbyId}) => {
             {yourTurn ? <>'Your turn'</> : <>'Opponent's turn</>}
         </div>
         {waitingForAnswer ? <div>Waiting for answer...</div> : <BottomNav askQuestion={askQuestion} />}
+        {question && answer && !yourTurn ? <div>They answered {answer} to {question}</div> : <></>}
         <AnswerQuestionModal question={question} isOpen={answeringQuestion} onAnswer={answerQuestion} />
       </div>
     );

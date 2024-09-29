@@ -17,4 +17,5 @@ public class GameWebSocketModel {
     String messageType;
     String question;
     String lobbyId;
+    String answer;
 }
