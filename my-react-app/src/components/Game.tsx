@@ -169,7 +169,7 @@ const Game: FC<any> = ({ lobbyId }) => {
               onClick={() => {}}
               isSelected={true}
             />
-            <div className='py-10'>
+            <div className='py-10 text-white'>
               {yourTurn ? `🟢 Your turn!` : `🔴 Opponent's turn`}
             </div>
           </div>
