@@ -20,7 +20,7 @@ _List the full names, email address & Github username of your teammates_
 1.  Hunter Ehrenfeld || hehrenfeld@fanthreesixty.com || HunterEhrenfeld
 2.  Seth Piepergerdes || spiepergerdes@fanthreesixty.com || spieps
 3.  AJ Wilber || awilber@fanthreesixty.com || ajwilber
-4.  Amelia Bigler || abigler@fanthreesixty.com || AmeliaBiger
+4.  Amelia Bigler || abigler@fanthreesixty.com || AmeliaBigler
 5.  Brandon & Dawson :fire:
 
 <br /><br />
