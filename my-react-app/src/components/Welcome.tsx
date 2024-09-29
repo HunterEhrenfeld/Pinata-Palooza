@@ -89,18 +89,6 @@ const Welcome: FC = () => {
           onMouseLeave={(e) =>
             (e.currentTarget.style.backgroundColor = '#f8f8f8')
           }
-          onClick={() => alert('Welcome!')}
-        >
-          Get Started
-        </button>
-        <button
-          style={styles.button}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = '#d3d3d3')
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = '#f8f8f8')
-          }
           onClick={() => navigate('/join')}
         >
           Join Lobby
