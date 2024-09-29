@@ -120,11 +120,10 @@ const Game: FC<any> = ({ lobbyId }) => {
           <div className='px-10 grid grid-rows-4 grid-cols-6 gap-3'>
             {persons.map((person: any) => (
               <PersonCard
-                key={person.id}
-                personId={person.id}
+                personId={person.cid}
                 name={person.name}
                 cid={person.cid}
-                isActive={activePersons.includes(person.id.toString())}
+                isActive={activePersons.includes(person.cid.toString())}
                 onClick={updatePersonCardClick}
                 isSelected={false}
               />
