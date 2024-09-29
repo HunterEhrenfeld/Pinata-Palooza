@@ -21,17 +21,21 @@ _List the full names, email address & Github username of your teammates_
 2.  Seth Piepergerdes || spiepergerdes@fanthreesixty.com || spieps
 3.  AJ Wilber || awilber@fanthreesixty.com || ajwilber
 4.  Amelia Bigler || abigler@fanthreesixty.com || AmeliaBigler
-5.  Brandon & Dawson :fire:
+5.  Brandon || blang@fanthreesixty.com || 
 
 <br /><br />
 
 ## What is the name of your App?
+
+Pinata Palooza
 
 <br /><br />
 
 ## What does your app do?
 
 _Describe in a paragraph or so_
+
+In a celebrity-themed version of Guess Who, players try to identify a famous person based on yes-or-no questions about their appearance. The game board features various celebrities from different industries like music, film, sports, and politics. Players can ask questions such as "Does your person have bald hair?" or "Is your person sad?" to narrow down the possibilities. The objective is to guess the correct celebrity before your opponent does by strategically eliminating options based on the answers given. It’s a fun, engaging way to test knowledge of pop culture and famous figures. This project uses Pinata to store the images and to fetch them.
 
 <br /><br />
 
@@ -42,9 +46,9 @@ _See hackmidwest.com/#prizes for challenge details_
 - [ X ] Pinata Challenge
 - [ ] Pinata AI Challenge
 - [ ] Pinata Enterprise Challenge
-- [ X ] AWS Bedrock Challenge
+- [ ] AWS Bedrock Challenge
 - [ ] Red Hat | Intel AI Challenge
-- [ X ] Zoom Challenge
+- [ ] Zoom Challenge
 - [ ] USDA Challenge
 - [ ] brAIn Rot Challenge
 
