@@ -47,6 +47,10 @@ const Welcome: FC = () => {
       fontWeight: 'bold' as const,
       marginBottom: '1.5rem',
       color: '#f8f8f8', // Light font color to contrast the dark background
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '10px', // Add space between text and the SVG
     },
     description: {
       fontSize: '1.2rem',
