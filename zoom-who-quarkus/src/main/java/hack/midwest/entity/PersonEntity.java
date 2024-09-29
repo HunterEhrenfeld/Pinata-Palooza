@@ -6,6 +6,7 @@ import io.quarkus.mongodb.panache.common.MongoEntity;
 @MongoEntity(collection = "person")
 public class PersonEntity extends PanacheMongoEntity {
     public String name;
+    public String cid;
     public String imageUrl;
     public String type;
 }
