@@ -16,7 +16,6 @@ const BottomNav: FC = () => {
   const [generatedQuestion, setGeneratedQuestion] = useState<string | null>(
     null
   );
-  const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
 
   const categories: Category[] = [
     {
@@ -191,13 +190,7 @@ const BottomNav: FC = () => {
       {/* Display the generated question and the button */}
       <div style={questionContainerStyle}>
         <div>{generatedQuestion || 'Your question will appear here...'}</div>
-        <button
-          style={questionButtonStyle}
-          onMouseEnter={() => setIsButtonHovered(true)}
-          onMouseLeave={() => setIsButtonHovered(false)}
-        >
-          Send Question
-        </button>
+        <button style={questionButtonStyle}>Send Question</button>
       </div>
     </div>
   );
