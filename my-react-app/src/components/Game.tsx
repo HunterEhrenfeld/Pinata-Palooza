@@ -121,7 +121,11 @@ const Game: FC<any> = ({ lobbyId }) => {
   };
 
   if (gameOver) {
-    return <div>Game Over</div>;
+    if (yourTurn) {
+      return <div>You won!</div>;
+    } else {
+      return <div>You lost</div>
+    }
   }
   if (loading) {
     return <div>Loading</div>;
