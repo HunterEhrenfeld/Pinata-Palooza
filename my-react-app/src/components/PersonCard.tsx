@@ -43,18 +43,18 @@ const PersonCard: FC<PersonCardProps> = ({
       fetchImage();
     }
   }, [cid]);
-  const x = <div className='text-7xl z-10 mt-10 ml-12 absolute'>❌</div>;
+  const x = <div className='text-7xl z-10 mt-5 ml-7 absolute'>❌</div>;
 
   return (
     <div
-      className={`${isSelected ? 'w-32 h-44' : 'w-32 h-44'} bg-slate-900 rounded-md flex flex-col overflow-hidden`}
+      className={`${isSelected ? 'w-40 h-44' : 'w-32 h-36'} bg-slate-900 rounded-md flex flex-col overflow-hidden`}
       onClick={() => onClick(personId)}
     >
-      <div className={`h-4/5 flex justify-center ${!isActive && 'grayscale'}`}>
+      <div className={`h-3/4 flex justify-center ${!isActive && 'grayscale'}`}>
         <img src={imageUrl} alt={name} className='object-cover'/>
       </div>
       {!isActive && x}
-      <div className='h-1/5 text-sm flex justify-center bg-slate-50'>{name}</div>
+      <div className='h-1/4 text-sm flex justify-center bg-slate-50'>{name}</div>
     </div>
   );
 };
