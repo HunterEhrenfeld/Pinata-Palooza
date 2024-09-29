@@ -50,7 +50,7 @@ const Game: FC<any> = ({lobbyId}) => {
     if (!loading && persons) {
       setYourPerson(persons[Math.floor(Math.random() * 24)]);
     }
-  }, [loading]);
+  }, [persons]);
 
   useEffect(() => {
     console.log(yourPerson);
@@ -71,6 +71,7 @@ const Game: FC<any> = ({lobbyId}) => {
                   cid={person.cid}
                   isActive={activePersons.includes(person.id.toString())}
                   onClick={updatePersonCardClick}
+                  isSelected={false}
                 />
               );
             })}
@@ -83,6 +84,7 @@ const Game: FC<any> = ({lobbyId}) => {
               cid={yourPerson.cid}
               isActive={true}
               onClick={() => {}}
+              isSelected={true}
             />
           </div>
         </div>
