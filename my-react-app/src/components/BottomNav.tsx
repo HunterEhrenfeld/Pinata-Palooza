@@ -6,11 +6,17 @@ interface Category {
   options: string[];
 }
 
-interface BottomNav {
-  askQuestion: (question: any) => void;
+interface BottomNavProps {
+  askQuestion: (question: string) => void;
+  submitGuess: (guessPersonId: string) => void; // Add submitGuess prop
+  persons: any[]; // List of all persons available to guess
 }
 
-const BottomNav: FC<BottomNav> = ({askQuestion}) => {
+const BottomNav: FC<BottomNavProps> = ({
+  askQuestion,
+  submitGuess,
+  persons,
+}) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -20,6 +26,7 @@ const BottomNav: FC<BottomNav> = ({askQuestion}) => {
   const [generatedQuestion, setGeneratedQuestion] = useState<string | null>(
     null
   );
+  const [selectedGuess, setSelectedGuess] = useState<string | null>(null); // Track the selected person guess
 
   const categories: Category[] = [
     {
@@ -121,7 +128,6 @@ const BottomNav: FC<BottomNav> = ({askQuestion}) => {
     color: '#fff',
   };
 
-  // Adjusted prompt box and button styling to match the provided design
   const questionContainerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'space-between',
@@ -138,7 +144,14 @@ const BottomNav: FC<BottomNav> = ({askQuestion}) => {
     height: '60px', // Uniform height
   };
 
-  const questionButtonStyle: React.CSSProperties = {
+  const bottomSectionStyle: React.CSSProperties = {
+    display: 'flex',
+    justifyContent: 'space-between', // Align buttons and guess selection on opposite sides
+    width: '100%',
+    padding: '20px 0',
+  };
+
+  const buttonStyle: React.CSSProperties = {
     backgroundColor: '#d3d3d3', // Light gray background to match theme
     color: '#333', // Darker text for contrast
     border: '1px solid #aaa', // Border similar to the options
@@ -148,6 +161,16 @@ const BottomNav: FC<BottomNav> = ({askQuestion}) => {
     fontSize: '14px',
     fontWeight: 'bold',
     transition: 'background-color 0.3s ease',
+  };
+
+  const guessSelectStyle: React.CSSProperties = {
+    padding: '10px',
+    borderRadius: '8px',
+    width: '200px',
+  };
+
+  const handleGuessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGuess(event.target.value);
   };
 
   return (
@@ -191,10 +214,41 @@ const BottomNav: FC<BottomNav> = ({askQuestion}) => {
         )}
       </div>
 
-      {/* Display the generated question and the button */}
-      <div style={questionContainerStyle}>
+      {/* Bottom section: Submit question on the left and guess on the right */}
+      <div style={bottomSectionStyle}>
         <div>{generatedQuestion || 'Your question will appear here...'}</div>
-        <button style={questionButtonStyle} onClick={() => askQuestion(generatedQuestion)}>Send Question</button>
+        <button
+          style={buttonStyle}
+          onClick={() => askQuestion(generatedQuestion)}
+          disabled={!generatedQuestion}
+        >
+          Send Question
+        </button>
+
+        {/* Select dropdown for making a final guess */}
+        <div>
+          <select
+            style={guessSelectStyle}
+            onChange={handleGuessChange}
+            value={selectedGuess || ''}
+          >
+            <option value='' disabled>
+              Select your final guess
+            </option>
+            {persons.map((person) => (
+              <option key={person.id} value={person.id}>
+                {person.name}
+              </option>
+            ))}
+          </select>
+          <button
+            style={buttonStyle}
+            onClick={() => submitGuess(selectedGuess)}
+            disabled={!selectedGuess}
+          >
+            Submit Guess
+          </button>
+        </div>
       </div>
     </div>
   );
