@@ -163,8 +163,8 @@ const Game: FC<any> = ({ lobbyId }) => {
         ) : (
           <BottomNav
             askQuestion={askQuestion}
-            submitGuess={submitGuess} // Pass submitGuess to BottomNav
-            persons={persons} // Pass the list of persons to BottomNav for guessing
+            submitGuess={submitGuess}
+            persons={persons}
           />
         )}
         {question && answer && !yourTurn ? (

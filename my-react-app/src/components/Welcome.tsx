@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import InlineSVG from 'react-inlinesvg';
-import pinata from '../../src/assets/pinata-palooza-logo-2.svg'
+import pinata from '../../src/assets/pinata-palooza-logo-2.svg';
 
 const Welcome: FC = () => {
   const navigate = useNavigate();
@@ -74,7 +74,9 @@ const Welcome: FC = () => {
   return (
     <div style={styles.outerContainer}>
       <div style={styles.container} className='font-sans'>
-        <h1 style={styles.title}>Welcome to <InlineSVG src={pinata}/></h1>
+        <h1 style={styles.title}>
+          Welcome to <InlineSVG src={pinata} />
+        </h1>
         <p style={styles.description}>
           Ready to play Guess Who? Join a lobby or start a game and challenge
           your friends!
@@ -104,18 +106,6 @@ const Welcome: FC = () => {
           Join Lobby
         </button>
         <ToastContainer />
-        <button
-          style={styles.button}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = '#d3d3d3')
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = '#f8f8f8')
-          }
-          onClick={() => navigate('/bottom')}
-        >
-          Bottom Nav Test
-        </button>
       </div>
     </div>
   );
