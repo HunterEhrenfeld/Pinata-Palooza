@@ -130,7 +130,6 @@ const BottomNav: FC<BottomNavProps> = ({
 
   const bottomRowStyle: React.CSSProperties = {
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     padding: '10px 20px',
@@ -142,7 +141,7 @@ const BottomNav: FC<BottomNavProps> = ({
     fontSize: '18px',
     fontWeight: 'bold',
     height: '60px',
-    boxSizing: 'border-box', // Ensure padding doesn't overflow
+    boxSizing: 'border-box',
   };
 
   const buttonStyle: React.CSSProperties = {
@@ -161,8 +160,15 @@ const BottomNav: FC<BottomNavProps> = ({
   const guessSelectStyle: React.CSSProperties = {
     padding: '10px',
     borderRadius: '8px',
-    width: '250px', // Increased width to fit the text
+    width: '250px',
     marginRight: '10px',
+  };
+
+  const promptTextStyle: React.CSSProperties = {
+    flexGrow: 1, // Take up the remaining space
+    textAlign: 'center',
+    padding: '0 10px',
+    fontSize: '16px',
   };
 
   const handleGuessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -212,6 +218,10 @@ const BottomNav: FC<BottomNavProps> = ({
 
       {/* Bottom section in a single row */}
       <div style={bottomRowStyle}>
+        <div style={promptTextStyle}>
+          {generatedQuestion || 'Your question will appear here...'}
+        </div>
+
         <button
           style={buttonStyle}
           onClick={() => askQuestion(generatedQuestion!)}
@@ -219,8 +229,6 @@ const BottomNav: FC<BottomNavProps> = ({
         >
           Send Question
         </button>
-
-        <div>{generatedQuestion || 'Your question will appear here...'}</div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <select
