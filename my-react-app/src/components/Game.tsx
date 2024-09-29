@@ -118,7 +118,7 @@ const Game: FC<any> = ({lobbyId}) => {
               );
             })}
           </div>
-          <div className='px-10 w-5'>
+          <div className='w-40'>
             Selected Person:
             <PersonCard
               personId={yourPerson.cid}
@@ -128,8 +128,8 @@ const Game: FC<any> = ({lobbyId}) => {
               onClick={() => {}}
               isSelected={true}
             />
+            <div className='py-10'>{yourTurn ? `🟢 Your turn!` : `🔴 Opponent's turn`}</div>
           </div>
-            {yourTurn ? <>'Your turn'</> : <>'Opponent's turn</>}
         </div>
         {waitingForAnswer ? <div>Waiting for answer...</div> : <BottomNav askQuestion={askQuestion} />}
         {question && answer && !yourTurn ? <div>They answered {answer} to {question}</div> : <></>}
