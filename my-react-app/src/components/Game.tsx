@@ -94,6 +94,7 @@ const Game: FC<any> = ({lobbyId}) => {
               isSelected={true}
             />
           </div>
+            {yourTurn ? <>'Your turn'</> : <>'Opponent's turn</>}
         </div>
         <BottomNav />
       </div>
