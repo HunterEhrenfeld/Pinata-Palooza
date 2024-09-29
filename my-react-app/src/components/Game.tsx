@@ -2,6 +2,7 @@ import { FC, useEffect, useState, useRef } from 'react';
 import PersonCard from './PersonCard';
 import BottomNav from './BottomNav';
 import AnswerQuestionModal from './AnswerQuestionModal';
+import confetti from 'canvas-confetti';
 
 const Game: FC<any> = ({ lobbyId }) => {
   // Hooks
@@ -136,9 +137,10 @@ const Game: FC<any> = ({ lobbyId }) => {
 
   if (gameOver) {
     if (yourTurn) {
-      return <div>You won!</div>;
+      confetti();
+      return <div className='text-white'>You won!</div>;
     } else {
-      return <div>You lost</div>;
+      return <div className='text-white'>You lost</div>;
     }
   }
   if (loading) {
