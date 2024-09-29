@@ -10,32 +10,41 @@ const Game: FC<any> = ({lobbyId}) => {
   const [personCardClick, updatePersonCardClick] = useState(null);
   const [activePersons, updateActivePersons] = useState<string[]>([]);
   const [yourPerson, setYourPerson] = useState({});
+  const [yourTurn, setYourTurn] = useState(null)
 
   const socketRef = useRef(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/persons/board');
-        setPersons(response.data);
-        updateActivePersons(response.data.map((i: { id: any }) => i.id));
-      } finally {
-        setLoading(false);
-      }
-    };
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await axios.get('http://localhost:8080/persons/board');
+    //     setPersons(response.data);
+    //     updateActivePersons(response.data.map((i: { id: any }) => i.id));
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
-    fetchData();
+    // fetchData();
     console.log(lobbyId)
     socketRef.current = new WebSocket(`ws://localhost:8080/game/${lobbyId}`);
 
     socketRef.current.onopen = (event) => {
-      console.log(event);
+      console.log(event.data);
     };
 
     socketRef.current.onmessage = (event) => {
-      const data = event.data;
-
-      console.log(data);
+      const data = JSON.parse(event.data);
+      // Initial game setp
+      console.log(data)
+      if (data.messageType === 'init') {
+        console.log("here");
+        setPersons(data.personList);
+        setYourPerson(data.yourPerson);
+        setYourTurn(data.yourTurn);
+        setLoading(!data.isReady);
+      }
+      
     }
   }, []);
 
@@ -47,10 +56,8 @@ const Game: FC<any> = ({lobbyId}) => {
   }, [personCardClick]);
 
   useEffect(() => {
-    if (!loading && persons) {
-      setYourPerson(persons[Math.floor(Math.random() * 24)]);
-    }
-  }, [persons]);
+    console.log(loading)
+  }, [loading]);
 
   useEffect(() => {
     console.log(yourPerson);

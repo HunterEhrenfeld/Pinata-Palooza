@@ -1,10 +1,14 @@
 package hack.midwest.websockets;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hack.midwest.entity.PersonEntity;
 import hack.midwest.models.GameWebSocketModel;
 import hack.midwest.service.PersonService;
+import io.vertx.core.impl.ConcurrentHashSet;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
@@ -31,18 +35,19 @@ public class GameWebSocket {
 //    private Map<String, Session> currentPlayer = new HashMap<>(); // Track whose turn it is
 //    private Map<Session, String> selectedCharacter = new HashMap<>(); // The character to guess
 
-    private Map<String, Set<Session>> gameList = new ConcurrentHashMap<>();
+    ObjectMapper objectMapper = new ObjectMapper();
+    private Map<String, ConcurrentHashSet<Session>> gameList = new ConcurrentHashMap<>();
     private Map<String, Session> playerTurn = new ConcurrentHashMap<>();
     private Map<String, List<PersonEntity>> gamePersons = new ConcurrentHashMap<>();
-    private Map<Session, PersonEntity> selectedCharacter = new HashMap<>();
+    private Map<Session, PersonEntity> selectedCharacter = new ConcurrentHashMap<>();
 
     @Inject
     PersonService personService;
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("gameId") String lobbyId) {
+    public void onOpen(Session session, @PathParam("gameId") String lobbyId) throws JsonProcessingException {
         System.out.println("here");
-        gameList.putIfAbsent(lobbyId, new HashSet<>());
+        gameList.putIfAbsent(lobbyId, new ConcurrentHashSet<>());
         Set<Session> gameSessions = gameList.get(lobbyId);
         if (gameSessions.isEmpty()) {
             playerTurn.put(lobbyId, session);
@@ -53,14 +58,12 @@ public class GameWebSocket {
         List<PersonEntity> gameCharacters = gamePersons.get(lobbyId);
         PersonEntity personEntity = gameCharacters.get((int) Math.floor(Math.random() * 24));
         selectedCharacter.put(session, personEntity);
-        Boolean yourTurn = session.equals(playerTurn.get(lobbyId));
         GameWebSocketModel payload = new GameWebSocketModel();
         payload.setPersonList(gameCharacters);
         payload.setYourPerson(personEntity);
-        payload.setYourTurn(yourTurn);
         payload.setIsReady(gameSessions.size() == 2);
         payload.setMessageType("init");
-        initBroadcast(payload, gameSessions);
+        initBroadcast(payload, gameSessions, lobbyId);
     }
 
 //    @OnClose
@@ -70,10 +73,10 @@ public class GameWebSocket {
 //        broadcast("A player has left the game.");
 //    }
 //
-//    @OnMessage
-//    public void onMessage(String message, Session session) {
-//        handleGameLogic(message, session);
-//    }
+    @OnMessage
+    public void onMessage(String message, Session session) {
+        handleGameLogic(message, session);
+    }
 //
 //    private void broadcast(String message) {
 //        for (Session session : sessions) {
@@ -81,13 +84,15 @@ public class GameWebSocket {
 //        }
 //    }
 
-    private void initBroadcast(GameWebSocketModel payload, Set<Session> sessions) {
+    private void initBroadcast(GameWebSocketModel payload, Set<Session> sessions, String lobbyId) throws JsonProcessingException {
         for (Session session : sessions) {
-            session.getAsyncRemote().sendObject(payload);
+            Boolean yourTurn = session.equals(playerTurn.get(lobbyId));
+            payload.setYourTurn(yourTurn);
+            session.getAsyncRemote().sendText(objectMapper.writeValueAsString(payload));
         }
     }
 
-//    private void handleGameLogic(String message, Session session) {
+    private void handleGameLogic(String message, Session session) {
 //        try {
 //            // Parse message from JSON to extract the type and content
 //            Map<String, Object> messageMap = new ObjectMapper().readValue(message, Map.class);
@@ -103,7 +108,7 @@ public class GameWebSocket {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//    }
+    }
 //
 //    private void handleQuestion(String question, Session session) {
 //        if (!playerSessions.get(currentPlayer).equals(session)) {
